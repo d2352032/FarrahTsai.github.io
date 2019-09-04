@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Machine Learning,Tensor Flow,Estimator,DNN,Iris,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="In this note, I use iris dataset from Kaggle to learn how to use TensorFlow Estimators to construct a DNN model. Estimator Steps Read in data (+ normalize) Train/test split Create feature columns Crea">
+<meta name="keywords" content="Machine Learning,Tensor Flow,Estimator,DNN,Iris">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow and Deep Neural Network (DNN)">
+<meta property="og:url" content="https://d2352032.github.io/2019/08/30/TensorFlow-and-Deep-Neural-Network/index.html">
+<meta property="og:site_name" content="Farrah&#39;s Notebook">
+<meta property="og:description" content="In this note, I use iris dataset from Kaggle to learn how to use TensorFlow Estimators to construct a DNN model. Estimator Steps Read in data (+ normalize) Train/test split Create feature columns Crea">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://d2352032.github.io/2019/08/30/TensorFlow-and-Deep-Neural-Network/feature_columns_1.jpg">
+<meta property="og:image" content="https://d2352032.github.io/2019/08/30/TensorFlow-and-Deep-Neural-Network/feature_columns_2.jpg">
+<meta property="og:updated_time" content="2019-09-02T05:10:39.892Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorFlow and Deep Neural Network (DNN)">
+<meta name="twitter:description" content="In this note, I use iris dataset from Kaggle to learn how to use TensorFlow Estimators to construct a DNN model. Estimator Steps Read in data (+ normalize) Train/test split Create feature columns Crea">
+<meta name="twitter:image" content="https://d2352032.github.io/2019/08/30/TensorFlow-and-Deep-Neural-Network/feature_columns_1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://d2352032.github.io/2019/08/30/TensorFlow-and-Deep-Neural-Network/">
+
+
+
+
+
+  <title>TensorFlow and Deep Neural Network (DNN) | Farrah's Notebook</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Farrah's Notebook</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://d2352032.github.io/2019/08/30/TensorFlow-and-Deep-Neural-Network/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Farrah Tsai">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Farrah's Notebook">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">TensorFlow and Deep Neural Network (DNN)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-30T07:27:33+08:00">
+                2019-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>In this note, I use iris dataset from Kaggle to learn how to use TensorFlow Estimators to construct a DNN model.</p>
+<h2 id="Estimator-Steps"><a href="#Estimator-Steps" class="headerlink" title="Estimator Steps"></a>Estimator Steps</h2><ol>
+<li>Read in data (+ normalize)</li>
+<li>Train/test split</li>
+<li>Create feature columns</li>
+<li>Create estimator input function and estimator model</li>
+<li>Train estimator model</li>
+<li>Predict with test input function</li>
+<li>Evaluation</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="Read-in-Data"><a href="#Read-in-Data" class="headerlink" title="Read in Data"></a>Read in Data</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df = pd.read_csv(<span class="string">'iris.csv'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}</code></pre><p></style><p></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sepal length (cm)</th>
+      <th>sepal width (cm)</th>
+      <th>petal length (cm)</th>
+      <th>petal width (cm)</th>
+      <th>target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4.9</td>
+      <td>3.0</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4.7</td>
+      <td>3.2</td>
+      <td>1.3</td>
+      <td>0.2</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4.6</td>
+      <td>3.1</td>
+      <td>1.5</td>
+      <td>0.2</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5.0</td>
+      <td>3.6</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<p>To use TensorFlow estimator, there are some rules:</p>
+<ol>
+<li>the dataset’s column name can NOT include special characters (ex. ‘(‘ )</li>
+<li>the target should be integer.</li>
+</ol>
+<p>Change the column name:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.columns = [<span class="string">'sepal_length'</span>,<span class="string">'sepal_width'</span>,<span class="string">'petal_length'</span>,<span class="string">'petal_width'</span>,<span class="string">'target'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>Spilt dataset into X and y, where y applied int casting:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X = df.drop(<span class="string">'target'</span>,axis=<span class="number">1</span>)</span><br><span class="line">y = df[<span class="string">'target'</span>].apply(int)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Train-Test-Split"><a href="#Train-Test-Split" class="headerlink" title="Train Test Split"></a>Train Test Split</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">0.3</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Create-Feature-Columns"><a href="#Create-Feature-Columns" class="headerlink" title="Create Feature Columns"></a>Create Feature Columns</h2><p>Reference: <a href="https://www.tensorflow.org/guide/feature_columns" target="_blank" rel="noopener">Feature Columns</a></p>
+<img src="/2019/08/30/TensorFlow-and-Deep-Neural-Network/feature_columns_1.jpg">
+<img src="/2019/08/30/TensorFlow-and-Deep-Neural-Network/feature_columns_2.jpg">
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X.columns</span><br></pre></td></tr></table></figure>
+
+<pre><code>Index([&apos;sepal_length&apos;, &apos;sepal_width&apos;, &apos;petal_length&apos;, &apos;petal_width&apos;], dtype=&apos;object&apos;)</code></pre><p>Transfer X columns from Pandas Series to TensorFlow Feature Columns(Numerical):</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">feat_cols = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> col <span class="keyword">in</span> X.columns:</span><br><span class="line">    feat_cols.append(tf.feature_column.numeric_column(col))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">type(X[<span class="string">'sepal_length'</span>])</span><br></pre></td></tr></table></figure>
+
+<pre><code>pandas.core.series.Series</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">feat_cols</span><br></pre></td></tr></table></figure>
+
+<pre><code>[NumericColumn(key=&apos;sepal_length&apos;, shape=(1,), default_value=None, dtype=tf.float32, normalizer_fn=None),
+ NumericColumn(key=&apos;sepal_width&apos;, shape=(1,), default_value=None, dtype=tf.float32, normalizer_fn=None),
+ NumericColumn(key=&apos;petal_length&apos;, shape=(1,), default_value=None, dtype=tf.float32, normalizer_fn=None),
+ NumericColumn(key=&apos;petal_width&apos;, shape=(1,), default_value=None, dtype=tf.float32, normalizer_fn=None)]</code></pre><h2 id="Create-Estimator-Input-Function-and-Estimator-Model"><a href="#Create-Estimator-Input-Function-and-Estimator-Model" class="headerlink" title="Create Estimator Input Function and Estimator Model"></a>Create Estimator Input Function and Estimator Model</h2><h3 id="Create-Estimator-Input-Function"><a href="#Create-Estimator-Input-Function" class="headerlink" title="Create Estimator Input Function:"></a>Create Estimator Input Function:</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># there is also a pandas_input_fn we'll see in the exercise!!</span></span><br><span class="line"><span class="comment"># num_epochs: limitation of training times. </span></span><br><span class="line"><span class="comment">#             num_epochs= 5 means the training will be stopped after go through every single training point for 5 times.           </span></span><br><span class="line"><span class="comment"># shuffle: if our target is sorted, we can use shuffle=True to shuffle it around.</span></span><br><span class="line"><span class="comment">#    </span></span><br><span class="line">input_func = tf.estimator.inputs.pandas_input_fn(x=X_train,y=y_train,batch_size=<span class="number">10</span>,num_epochs=<span class="number">5</span>,shuffle=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Create-DNN-Classifier"><a href="#Create-DNN-Classifier" class="headerlink" title="Create DNN Classifier"></a>Create DNN Classifier</h3><p>To create DNN classifier, we need to know how many classes there are for the iris:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">set(y)</span><br></pre></td></tr></table></figure>
+
+<pre><code>{0, 1, 2}</code></pre><p>It means we have 3 species: {0, 1, 2}</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># hidden_units: list of number of neurons in each layer. len(hidden_units) = number of hidden layers</span></span><br><span class="line"><span class="comment">#               hidden_units=[10, 20, 10]=&gt; layers = input + 10 + 20 + 10 + output layer</span></span><br><span class="line"><span class="comment"># n_classes: how many classes we expect </span></span><br><span class="line">classifier = tf.estimator.DNNClassifier(hidden_units=[<span class="number">10</span>, <span class="number">20</span>, <span class="number">10</span>], n_classes=<span class="number">3</span>,feature_columns=feat_cols)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Train-Estimator-Model"><a href="#Train-Estimator-Model" class="headerlink" title="Train Estimator Model"></a>Train Estimator Model</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">classifier.train(input_fn=input_func,steps=<span class="number">50</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;tensorflow_estimator.python.estimator.canned.dnn.DNNClassifier at 0x1a57283c320&gt;</code></pre><h2 id="Prediction-with-Test-Input-Function"><a href="#Prediction-with-Test-Input-Function" class="headerlink" title="Prediction with Test Input Function"></a>Prediction with Test Input Function</h2><p>** Use the predict method from the classifier model to create predictions from X_test **</p>
+<p>Create the input function for prediction:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pred_input_fn = tf.estimator.inputs.pandas_input_fn(x=X_test,batch_size=len(X_test),shuffle=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>Use classifier to predict pred_input_fn:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">predictions = list(classifier.predict(input_fn=pred_input_fn))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">predictions[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<pre><code>{&apos;logits&apos;: array([-2.4918616,  1.0184311,  0.2909072], dtype=float32),
+ &apos;probabilities&apos;: array([0.01975435, 0.6609421 , 0.3193036 ], dtype=float32),
+ &apos;class_ids&apos;: array([1], dtype=int64),
+ &apos;classes&apos;: array([b&apos;1&apos;], dtype=object),
+ &apos;all_class_ids&apos;: array([0, 1, 2]),
+ &apos;all_classes&apos;: array([b&apos;0&apos;, b&apos;1&apos;, b&apos;2&apos;], dtype=object)}</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y_pred  = []</span><br><span class="line"><span class="keyword">for</span> pred <span class="keyword">in</span> predictions:</span><br><span class="line">    y_pred.append(pred[<span class="string">'class_ids'</span>][<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+
+<h2 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h2><p>Here we use <a href="https://medium.com/@chih.sheng.huang821/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92-%E7%B5%B1%E8%A8%88%E6%96%B9%E6%B3%95-%E6%A8%A1%E5%9E%8B%E8%A9%95%E4%BC%B0-%E9%A9%97%E8%AD%89%E6%8C%87%E6%A8%99-b03825ff0814" target="_blank" rel="noopener">Classfication Report</a> and <a href="https://www.ycc.idv.tw/confusion-matrix.html" target="_blank" rel="noopener">Confusion Matrix</a> for Evaluation:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report,confusion_matrix</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(confusion_matrix(y_test,y_pred))</span><br></pre></td></tr></table></figure>
+
+<pre><code>[[16  0  0]
+ [ 0 14  2]
+ [ 0  0 13]]</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(classification_report(y_test,y_pred))</span><br></pre></td></tr></table></figure>
+
+<pre><code>              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        16
+           1       1.00      0.88      0.93        16
+           2       0.87      1.00      0.93        13
+
+    accuracy                           0.96        45
+   macro avg       0.96      0.96      0.95        45
+weighted avg       0.96      0.96      0.96        45</code></pre><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/python-for-data-science-and-machine-learning-bootcamp/" target="_blank" rel="noopener">Python for Data Science and Machine Learning Bootcamp</a></p>
+<p><a href="https://www.tensorflow.org/guide/feature_columns" target="_blank" rel="noopener">Feature Columns - TensorFlow Core</a></p>
+<p><a href="https://www.ycc.idv.tw/confusion-matrix.html" target="_blank" rel="noopener">如何辨別機器學習模型的好壞？秒懂Confusion Matrix</a></p>
+<p><a href="https://medium.com/@chih.sheng.huang821/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92-%E7%B5%B1%E8%A8%88%E6%96%B9%E6%B3%95-%E6%A8%A1%E5%9E%8B%E8%A9%95%E4%BC%B0-%E9%A9%97%E8%AD%89%E6%8C%87%E6%A8%99-b03825ff0814" target="_blank" rel="noopener">機器學習\統計方法: 模型評估-驗證指標(validation index)</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          
+            <a href="/tags/Tensor-Flow/" rel="tag"># Tensor Flow</a>
+          
+            <a href="/tags/Estimator/" rel="tag"># Estimator</a>
+          
+            <a href="/tags/DNN/" rel="tag"># DNN</a>
+          
+            <a href="/tags/Iris/" rel="tag"># Iris</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/30/Tensorflow-and-MNIST-Dataset/" rel="next" title="TensorFlow and MNIST Data Set">
+                <i class="fa fa-chevron-left"></i> TensorFlow and MNIST Data Set
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Farrah Tsai</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/d2352032" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:d2352032@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/hsin-fang-tsai-0b5a54ba/" target="_blank" title="Linkedin">
+                      
+                        <i class="fa fa-fw fa-linkedin"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Estimator-Steps"><span class="nav-number">1.</span> <span class="nav-text">Estimator Steps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Read-in-Data"><span class="nav-number">2.</span> <span class="nav-text">Read in Data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Train-Test-Split"><span class="nav-number">3.</span> <span class="nav-text">Train Test Split</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-Feature-Columns"><span class="nav-number">4.</span> <span class="nav-text">Create Feature Columns</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-Estimator-Input-Function-and-Estimator-Model"><span class="nav-number">5.</span> <span class="nav-text">Create Estimator Input Function and Estimator Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-Estimator-Input-Function"><span class="nav-number">5.1.</span> <span class="nav-text">Create Estimator Input Function:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-DNN-Classifier"><span class="nav-number">5.2.</span> <span class="nav-text">Create DNN Classifier</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Train-Estimator-Model"><span class="nav-number">6.</span> <span class="nav-text">Train Estimator Model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prediction-with-Test-Input-Function"><span class="nav-number">7.</span> <span class="nav-text">Prediction with Test Input Function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Evaluation"><span class="nav-number">8.</span> <span class="nav-text">Evaluation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">9.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Farrah Tsai</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Machine Learning,Probability,Perceptron,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Q9: Consider a bin with infinitely many marbles, and let μ be the fraction of orange marbles in the bin, and ν is the fraction of orange marbles in a sample of 10 marbles. If μ=0.5, what is the probab">
+<meta name="keywords" content="Machine Learning,Probability,Perceptron">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Machine Learning Foundation HW1">
+<meta property="og:url" content="https://d2352032.github.io/2019/08/02/Machine-Learning-Foundation-HW1/index.html">
+<meta property="og:site_name" content="Farrah&#39;s Notebook">
+<meta property="og:description" content="Q9: Consider a bin with infinitely many marbles, and let μ be the fraction of orange marbles in the bin, and ν is the fraction of orange marbles in a sample of 10 marbles. If μ=0.5, what is the probab">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-09-02T00:24:20.276Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Machine Learning Foundation HW1">
+<meta name="twitter:description" content="Q9: Consider a bin with infinitely many marbles, and let μ be the fraction of orange marbles in the bin, and ν is the fraction of orange marbles in a sample of 10 marbles. If μ=0.5, what is the probab">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://d2352032.github.io/2019/08/02/Machine-Learning-Foundation-HW1/">
+
+
+
+
+
+  <title>Machine Learning Foundation HW1 | Farrah's Notebook</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Farrah's Notebook</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://d2352032.github.io/2019/08/02/Machine-Learning-Foundation-HW1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Farrah Tsai">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Farrah's Notebook">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Machine Learning Foundation HW1</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-02T13:43:03+08:00">
+                2019-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Q9-Consider-a-bin-with-infinitely-many-marbles-and-let-μ-be-the-fraction-of-orange-marbles-in-the-bin-and-ν-is-the-fraction-of-orange-marbles-in-a-sample-of-10-marbles-If-μ-0-5-what-is-the-probability-of-ν-μ-Please-choose-the-closest-number"><a href="#Q9-Consider-a-bin-with-infinitely-many-marbles-and-let-μ-be-the-fraction-of-orange-marbles-in-the-bin-and-ν-is-the-fraction-of-orange-marbles-in-a-sample-of-10-marbles-If-μ-0-5-what-is-the-probability-of-ν-μ-Please-choose-the-closest-number" class="headerlink" title="Q9: Consider a bin with infinitely many marbles, and let μ be the fraction of orange marbles in the bin, and ν is the fraction of orange marbles in a sample of 10 marbles. If μ=0.5, what is the probability of ν=μ? Please choose the closest number."></a>Q9: Consider a bin with infinitely many marbles, and let μ be the fraction of orange marbles in the bin, and ν is the fraction of orange marbles in a sample of 10 marbles. If μ=0.5, what is the probability of ν=μ? Please choose the closest number.</h2><h3 id="Explanation"><a href="#Explanation" class="headerlink" title="Explanation"></a>Explanation</h3><blockquote>
+<p>u是罐子中的黄色小球概率，v是样本中的黄色小球概率，u=0.5。题目中已规定v=u=0.5，则10个样本中黄色球的个数为10*v=5，剩下的绿色球的个数为10-5=5。</p>
+<p>最后实际上是要求解：取出来的10个样本中，黄色小球为5个 绿色小球为5个的概率。</p>
+<p>注意，要用v来计算样本中各类小球的数量，这仅仅代表取样结果。真实取样时，要用罐子中的实际概u来求解。）</p>
+</blockquote>
+<p><a href="https://www.coursera.org/learn/ntumlone-mathematicalfoundations/discussions/weeks/4/threads/Sf5bz2cVEeeNUQ7djXWc7g" target="_blank" rel="noopener">Ref:Class Forum</a></p>
+<a id="more"></a>
+<h3 id="Probability-Computation"><a href="#Probability-Computation" class="headerlink" title="Probability Computation"></a>Probability Computation</h3><blockquote>
+<p>10000個裡面有10個不良品 不良比例為0.001<br>取樣25個 滿足二項式分布,假設取到k個不良品 </p>
+<p>–&gt; C(25,k) (0.999)^(n-k)*(0.001)^k </p>
+<ol>
+<li>取不到不良品 k=0<br> C(25,0) 0.999^25*1=0.999^25= 0.9753… </li>
+<li>取到不良品 K不等於0<br> =1-P(取不到不良品)<br> =1-C(25,0) 0.999^25*1=0.0247…</li>
+</ol>
+</blockquote>
+<p><a href="https://tw.answers.yahoo.com/question/index?qid=20100210000010KK02022" target="_blank" rel="noopener">Ref: 取樣</a></p>
+<h3 id="Solution-Implement-by-Octave"><a href="#Solution-Implement-by-Octave" class="headerlink" title="Solution Implement by Octave"></a>Solution Implement by Octave</h3><p>ans = samplingProbability(u,n)</p>
+<figure class="highlight m"><table><tr><td class="code"><pre><span class="line">function ans <span class="built_in">=</span> samplingProbability(u,n)</span><br><span class="line">   k <span class="built_in">=</span> n * u;</span><br><span class="line">   ans <span class="built_in">=</span> c(n,k)*u^k*(<span class="number">1</span>-u)^(n-k);</span><br><span class="line">endfunction</span><br><span class="line"></span><br><span class="line">function ans <span class="built_in">=</span> c(n,k)</span><br><span class="line">   ans <span class="built_in">=</span> factorial(n)/factorial(n-k)/factorial(k);</span><br><span class="line">endfunction</span><br></pre></td></tr></table></figure>
+
+<h2 id="Q11-If-μ-0-5-what-is-the-actual-probability-of-ν-lt-0-1"><a href="#Q11-If-μ-0-5-what-is-the-actual-probability-of-ν-lt-0-1" class="headerlink" title="Q11 If μ=0.5, what is the actual probability of ν&lt;=0.1?"></a>Q11 If μ=0.5, what is the actual probability of ν&lt;=0.1?</h2><h3 id="Explanation-1"><a href="#Explanation-1" class="headerlink" title="Explanation"></a>Explanation</h3><p>probability of v &lt;= 0.1 means <strong>probability of (v = 0 or v = 1)</strong> </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">=&gt; P(A∪B)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Probability-Theorem"><a href="#Probability-Theorem" class="headerlink" title="Probability Theorem"></a>Probability Theorem</h3><p>機率 P(A∩B) 稱 為 A 和 B 的 聯 合 機 率 (joint probability) 。</p>
+<p>加法法則 (addition rule) ： </p>
+<ol>
+<li><p>若 A 和 B 為同一空間中的兩個事件，則</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">P(A∪B) = P(A) + P(B) − P(A∩B)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>若 A 和 B 為互斥事件(mutually exclusive events)，則</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">P(A∪B) = P(A) + P(B)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p><a href="http://myweb.utaipei.edu.tw/~cyang/class/Statistics/ch03.pdf" target="_blank" rel="noopener">Ref:基礎機率概念</a></p>
+<p>Therefore let <strong>event A: v =0</strong>, <strong>event B: v = 0.1</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">P(A∪B) = P(A) + P(B) = P(0) + P(0.1)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Solution-Implement-by-Octave-1"><a href="#Solution-Implement-by-Octave-1" class="headerlink" title="Solution Implement by Octave"></a>Solution Implement by Octave</h3><p>ans = samplingProbability_v(u, <strong>v = 0</strong>, n) + samplingProbability_v(u, <strong>v = 0.1</strong>, n)</p>
+<figure class="highlight m"><table><tr><td class="code"><pre><span class="line">function ans <span class="built_in">=</span> samplingProbability_v(u,v,n)</span><br><span class="line">   k <span class="built_in">=</span> n * v;</span><br><span class="line">   ans <span class="built_in">=</span> c(n,k)*u^k*(<span class="number">1</span>-u)^(n-k);</span><br><span class="line">endfunction</span><br></pre></td></tr></table></figure>
+
+<h2 id="Q13-Consider-four-kinds-of-dice-in-a-bag-with-the-same-super-large-quantity-for-each-kind"><a href="#Q13-Consider-four-kinds-of-dice-in-a-bag-with-the-same-super-large-quantity-for-each-kind" class="headerlink" title="Q13 Consider four kinds of dice in a bag, with the same (super large) quantity for each kind."></a>Q13 Consider four kinds of dice in a bag, with the same (super large) quantity for each kind.</h2><p>A: all even numbers are colored orange, all odd numbers are colored green</p>
+<p>B: all even numbers are colored green, all odd numbers are colored orange</p>
+<p>C: all small (1-3) are colored orange, all large numbers (4­-6) are colored green</p>
+<p>D: all small (1­-3) are colored green, all large numbers (4-6) are colored orange</p>
+<p>If we pick 5 dice from the bag, what is the probability that we get 5 orange 1’s?</p>
+<h3 id="Explanation-2"><a href="#Explanation-2" class="headerlink" title="Explanation"></a>Explanation</h3><p>As the problem mentions:</p>
+<blockquote>
+<p>Please note that the dice <strong>is not meant to be thrown</strong> for random experiments in this problem. They are just used to bind the six faces together. </p>
+</blockquote>
+<p>so we don’t need to compute the probability of throwing dice.</p>
+<h3 id="Probability-Computation-1"><a href="#Probability-Computation-1" class="headerlink" title="Probability Computation"></a>Probability Computation</h3><ol>
+<li><p>Think about <strong>probabilty of getting 1 dice with orange 1</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">=&gt; P(getting 1 dice with orange 1) = P(get B dice) + P(get C dice)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Probability of getting 5 dice with orange 1</strong> </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">=&gt; P(getting 1 dice with orange 1) ^ 5</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="Q14-If-we-pick-5-dice-from-the-bag-what-is-the-probability-that-we-get-“some-number”-that-is-purely-orange"><a href="#Q14-If-we-pick-5-dice-from-the-bag-what-is-the-probability-that-we-get-“some-number”-that-is-purely-orange" class="headerlink" title="Q14 If we pick 5 dice from the bag, what is the probability that we get “some number” that is purely orange?"></a>Q14 If we pick 5 dice from the bag, what is the probability that we get “some number” that is purely orange?</h2><h3 id="Explanation-3"><a href="#Explanation-3" class="headerlink" title="Explanation"></a>Explanation</h3><p>Recall Q13, the probability of getting 5 dice with orange 1 can be also written as:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">P(get 5 orange 1) = outcome of &apos;B or C&apos; / all outcome = 2^5 / 4^5</span><br><span class="line">P(得到5個orange1) = 拿到B或C的出象 / 所有的出象 = 2^5 / 4^5</span><br></pre></td></tr></table></figure>
+
+<p>So the probability of getting 5 dice with orange ‘some #’ can be represented as</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">P(get 5 orange #) = outcome of &apos;dice for orange #&apos;/ all outcome</span><br></pre></td></tr></table></figure>
+
+<h3 id="Outcome-of-‘dice-for-orange-’"><a href="#Outcome-of-‘dice-for-orange-’" class="headerlink" title="Outcome of ‘dice for orange #’"></a>Outcome of ‘dice for orange #’</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">outcome of &apos;dice for orange #&apos; </span><br><span class="line">= (outcome of &apos;B or C for orange 1&apos;</span><br><span class="line">  \+ outcome of &apos;A or C for orange 2&apos;</span><br><span class="line">  \.\.\.</span><br><span class="line">  \+ outcome of &apos;A or D for orange 6&apos;) </span><br><span class="line">= outcome of AC, BC, AD, BD</span><br><span class="line">= O(AC ∪ BC ∪ AD ∪ BD) </span><br><span class="line"></span><br><span class="line">- O(event) = number of outcome of the event.</span><br></pre></td></tr></table></figure>
+
+<p>However, AC, BC, AD, BD is not mutually exclusive events:<br>they repeats for all A, all B, all C, all D condition<br>i.e </p>
+<table>
+<thead>
+<tr>
+<th align="center">AC</th>
+<th align="center">BC</th>
+<th align="center">AD</th>
+<th align="center">BD</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">AAAAA</td>
+<td align="center">BBBBB</td>
+<td align="center">AAAAA</td>
+<td align="center">BBBBB</td>
+<td align="left">A, B repeats =&gt; -2</td>
+</tr>
+<tr>
+<td align="center">CCCCC</td>
+<td align="center">CCCCC</td>
+<td align="center">DDDDD</td>
+<td align="center">DDDDD</td>
+<td align="left">C, D repeats =&gt; -2</td>
+</tr>
+<tr>
+<td align="center">ACA..</td>
+<td align="center">CB…</td>
+<td align="center">AAD..</td>
+<td align="center">BDD..</td>
+<td align="left">no repeat</td>
+</tr>
+</tbody></table>
+<p>Therefore, </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">outcome of &apos;dice for orange #&apos; </span><br><span class="line">= O(AC ∪ BC ∪ AD ∪ BD) </span><br><span class="line">= O(AC) + O(BC) + O(AD) + O(BD) - O(A,B) - O(C,D)</span><br><span class="line">= O(AC) + O(BC) + O(AD) + O(BD) - 4</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          
+            <a href="/tags/Probability/" rel="tag"># Probability</a>
+          
+            <a href="/tags/Perceptron/" rel="tag"># Perceptron</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/02/Hexo-How-to-Add-Pictures/" rel="next" title="Hexo - How to add pictures">
+                <i class="fa fa-chevron-left"></i> Hexo - How to add pictures
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/02/Python-for-Data-Science-and-Machine-Learning-Bootcamp/" rel="prev" title="Python for Data Science and Machine Learning Bootcamp">
+                Python for Data Science and Machine Learning Bootcamp <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Farrah Tsai</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/d2352032" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:d2352032@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/hsin-fang-tsai-0b5a54ba/" target="_blank" title="Linkedin">
+                      
+                        <i class="fa fa-fw fa-linkedin"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Q9-Consider-a-bin-with-infinitely-many-marbles-and-let-μ-be-the-fraction-of-orange-marbles-in-the-bin-and-ν-is-the-fraction-of-orange-marbles-in-a-sample-of-10-marbles-If-μ-0-5-what-is-the-probability-of-ν-μ-Please-choose-the-closest-number"><span class="nav-number">1.</span> <span class="nav-text">Q9: Consider a bin with infinitely many marbles, and let μ be the fraction of orange marbles in the bin, and ν is the fraction of orange marbles in a sample of 10 marbles. If μ=0.5, what is the probability of ν=μ? Please choose the closest number.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Explanation"><span class="nav-number">1.1.</span> <span class="nav-text">Explanation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Probability-Computation"><span class="nav-number">1.2.</span> <span class="nav-text">Probability Computation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solution-Implement-by-Octave"><span class="nav-number">1.3.</span> <span class="nav-text">Solution Implement by Octave</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q11-If-μ-0-5-what-is-the-actual-probability-of-ν-lt-0-1"><span class="nav-number">2.</span> <span class="nav-text">Q11 If μ=0.5, what is the actual probability of ν&lt;=0.1?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Explanation-1"><span class="nav-number">2.1.</span> <span class="nav-text">Explanation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Probability-Theorem"><span class="nav-number">2.2.</span> <span class="nav-text">Probability Theorem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solution-Implement-by-Octave-1"><span class="nav-number">2.3.</span> <span class="nav-text">Solution Implement by Octave</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q13-Consider-four-kinds-of-dice-in-a-bag-with-the-same-super-large-quantity-for-each-kind"><span class="nav-number">3.</span> <span class="nav-text">Q13 Consider four kinds of dice in a bag, with the same (super large) quantity for each kind.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Explanation-2"><span class="nav-number">3.1.</span> <span class="nav-text">Explanation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Probability-Computation-1"><span class="nav-number">3.2.</span> <span class="nav-text">Probability Computation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q14-If-we-pick-5-dice-from-the-bag-what-is-the-probability-that-we-get-“some-number”-that-is-purely-orange"><span class="nav-number">4.</span> <span class="nav-text">Q14 If we pick 5 dice from the bag, what is the probability that we get “some number” that is purely orange?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Explanation-3"><span class="nav-number">4.1.</span> <span class="nav-text">Explanation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Outcome-of-‘dice-for-orange-’"><span class="nav-number">4.2.</span> <span class="nav-text">Outcome of ‘dice for orange #’</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Farrah Tsai</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Numpy,Python,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="NumPy Indexing and SelectionIn this lecture we will discuss how to select elements or groups of elements from an array. import numpy as np#Creating sample arrayarr = np.arange(0,11)  Bracket Indexing">
+<meta name="keywords" content="Numpy,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NumPy Indexing and Selection">
+<meta property="og:url" content="https://d2352032.github.io/2019/08/03/Numpy Indexing and Selection/index.html">
+<meta property="og:site_name" content="Farrah&#39;s Notebook">
+<meta property="og:description" content="NumPy Indexing and SelectionIn this lecture we will discuss how to select elements or groups of elements from an array. import numpy as np#Creating sample arrayarr = np.arange(0,11)  Bracket Indexing">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-09-02T00:24:51.470Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NumPy Indexing and Selection">
+<meta name="twitter:description" content="NumPy Indexing and SelectionIn this lecture we will discuss how to select elements or groups of elements from an array. import numpy as np#Creating sample arrayarr = np.arange(0,11)  Bracket Indexing">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://d2352032.github.io/2019/08/03/Numpy Indexing and Selection/">
+
+
+
+
+
+  <title>NumPy Indexing and Selection | Farrah's Notebook</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Farrah's Notebook</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://d2352032.github.io/2019/08/03/Numpy Indexing and Selection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Farrah Tsai">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Farrah's Notebook">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NumPy Indexing and Selection</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-03T00:34:05+08:00">
+                2019-08-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="NumPy-Indexing-and-Selection"><a href="#NumPy-Indexing-and-Selection" class="headerlink" title="NumPy Indexing and Selection"></a>NumPy Indexing and Selection</h2><p>In this lecture we will discuss how to select elements or groups of elements from an array.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment">#Creating sample array</span></span><br><span class="line">arr = np.arange(<span class="number">0</span>,<span class="number">11</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Bracket-Indexing-and-Selection"><a href="#Bracket-Indexing-and-Selection" class="headerlink" title="Bracket Indexing and Selection"></a>Bracket Indexing and Selection</h3><p>The simplest way to pick one or some elements of an array looks very similar to python lists:</p>
+<a id="more"></a>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#Get values in a range</span></span><br><span class="line">arr = np.arange(<span class="number">0</span>,<span class="number">11</span>)</span><br><span class="line">arr[<span class="number">0</span>:<span class="number">5</span>]</span><br><span class="line">&gt;&gt; array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="Broadcasting"><a href="#Broadcasting" class="headerlink" title="Broadcasting"></a>Broadcasting</h3><p>Numpy arrays differ from a normal Python list because of their ability to broadcast:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#Setting a value with index range (Broadcasting)</span></span><br><span class="line">arr[<span class="number">0</span>:<span class="number">5</span>]=<span class="number">100</span></span><br><span class="line">&gt;&gt; array([<span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>,   <span class="number">5</span>,   <span class="number">6</span>,   <span class="number">7</span>,   <span class="number">8</span>,   <span class="number">9</span>,  <span class="number">10</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">#Important notes on Slices</span></span><br><span class="line">arr = np.arange(<span class="number">0</span>,<span class="number">11</span>)</span><br><span class="line">slice_of_arr = arr[<span class="number">0</span>:<span class="number">6</span>]</span><br><span class="line">&gt;&gt; array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">#Change Slice</span></span><br><span class="line">slice_of_arr[:]=<span class="number">99</span></span><br><span class="line">&gt;&gt; array([<span class="number">99</span>, <span class="number">99</span>, <span class="number">99</span>, <span class="number">99</span>, <span class="number">99</span>, <span class="number">99</span>])</span><br></pre></td></tr></table></figure>
+
+<p>Now note the changes also occur in our original array!</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr</span><br><span class="line">&gt;&gt; array([<span class="number">99</span>, <span class="number">99</span>, <span class="number">99</span>, <span class="number">99</span>, <span class="number">99</span>, <span class="number">99</span>,  <span class="number">6</span>,  <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">9</span>, <span class="number">10</span>])</span><br></pre></td></tr></table></figure>
+
+<p>Data is not copied, it’s a view of the original array! This avoids memory problems!</p>
+<p>To copy data:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#To get a copy, need to be explicit</span></span><br><span class="line">arr_copy = arr.copy()</span><br><span class="line">&gt;&gt; array([<span class="number">99</span>, <span class="number">99</span>, <span class="number">99</span>, <span class="number">99</span>, <span class="number">99</span>, <span class="number">99</span>,  <span class="number">6</span>,  <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">9</span>, <span class="number">10</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="Indexing-a-2D-array-matrices"><a href="#Indexing-a-2D-array-matrices" class="headerlink" title="Indexing a 2D array (matrices)"></a>Indexing a 2D array (matrices)</h3><p>The general format is <strong>arr_2d[row][col]</strong> or <strong>arr_2d[row,col]</strong>. I recommend usually using the comma notation for clarity.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr_2d = np.array(([<span class="number">5</span>,<span class="number">10</span>,<span class="number">15</span>],[<span class="number">20</span>,<span class="number">25</span>,<span class="number">30</span>],[<span class="number">35</span>,<span class="number">40</span>,<span class="number">45</span>]))</span><br><span class="line">&gt;&gt; array([[ <span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>],</span><br><span class="line">        [<span class="number">20</span>, <span class="number">25</span>, <span class="number">30</span>],</span><br><span class="line">        [<span class="number">35</span>, <span class="number">40</span>, <span class="number">45</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment">#Indexing row</span></span><br><span class="line">arr_2d[<span class="number">1</span>]</span><br><span class="line">&gt;&gt; array([<span class="number">20</span>, <span class="number">25</span>, <span class="number">30</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Format is arr_2d[row][col] or arr_2d[row,col]</span></span><br><span class="line"><span class="comment"># Getting individual element value</span></span><br><span class="line">arr_2d[<span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line">arr_2d[<span class="number">1</span>,<span class="number">0</span>]</span><br><span class="line">&gt;&gt; <span class="number">20</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2D array slicing</span></span><br><span class="line"><span class="comment">#Shape (2,2) from top right corner</span></span><br><span class="line">arr_2d[:<span class="number">2</span>,<span class="number">1</span>:]</span><br><span class="line">&gt;&gt; array([[<span class="number">10</span>, <span class="number">15</span>],</span><br><span class="line">           [<span class="number">25</span>, <span class="number">30</span>]])</span><br></pre></td></tr></table></figure>
+
+<h3 id="Fancy-Indexing"><a href="#Fancy-Indexing" class="headerlink" title="Fancy Indexing"></a>Fancy Indexing</h3><p>Fancy indexing allows you to select entire rows or columns out of order,to show this, let’s quickly build out a numpy array:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#Set up array</span></span><br><span class="line">arr = np.arange(<span class="number">1</span>,<span class="number">26</span>)</span><br><span class="line">arr.reshape(<span class="number">5</span>,<span class="number">5</span>)</span><br><span class="line">&gt;&gt; array([[ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">3</span>,  <span class="number">4</span>,  <span class="number">5</span>],</span><br><span class="line">           [ <span class="number">6</span>,  <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">9</span>, <span class="number">10</span>],</span><br><span class="line">           [<span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>],</span><br><span class="line">           [<span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>],</span><br><span class="line">           [<span class="number">21</span>, <span class="number">22</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">25</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>Fancy indexing allows the following</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr2d[[<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>]]</span><br><span class="line">&gt;&gt; array([<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="Selection"><a href="#Selection" class="headerlink" title="Selection"></a>Selection</h3><p>Let’s briefly go over how to use brackets for selection based off of comparison operators.</p>
+<pre><code class="python">arr = np.arange(<span class="number">1</span>,<span class="number">11</span>)
+arr
+&gt;&gt; array([ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">3</span>,  <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">6</span>,  <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">9</span>, <span class="number">10</span>])
+
+arr &gt; <span class="number">4</span>
+&gt;&gt; array([<span class="literal">False</span>, <span class="literal">False</span>, <span class="literal">False</span>, <span class="literal">False</span>,  <span class="literal">True</span>,  <span class="literal">True</span>,  <span class="literal">True</span>,  <span class="literal">True</span>,  <span class="literal">True</span>,  <span class="literal">True</span>], dtype=bool)
+
+bool_arr = arr&gt;<span class="number">4</span>
+bool_arr
+&gt;&gt; array([<span class="literal">False</span>, <span class="literal">False</span>, <span class="literal">False</span>, <span class="literal">False</span>,  <span class="literal">True</span>,  <span class="literal">True</span>,  <span class="literal">True</span>,  <span class="literal">True</span>,  <span class="literal">True</span>,  <span class="literal">True</span>], dtype=bool)
+
+arr[bool_arr]
+&gt;&gt; array([ <span class="number">5</span>,  <span class="number">6</span>,  <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">9</span>, <span class="number">10</span>])
+
+arr[arr&gt;<span class="number">2</span>]
+&gt;&gt; array([ <span class="number">3</span>,  <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">6</span>,  <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">9</span>, <span class="number">10</span>])
+
+x = <span class="number">2</span>
+arr[arr&gt;x]
+&gt;&gt; array([ <span class="number">3</span>,  <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">6</span>,  <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">9</span>, <span class="number">10</span>])
+
+</code></pre>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Numpy/" rel="tag"># Numpy</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/02/Perceptron-Model-PLA/" rel="next" title="Perceptron Model (PLA)">
+                <i class="fa fa-chevron-left"></i> Perceptron Model (PLA)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/05/Pandas/" rel="prev" title="Pandas">
+                Pandas <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Farrah Tsai</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/d2352032" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:d2352032@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/hsin-fang-tsai-0b5a54ba/" target="_blank" title="Linkedin">
+                      
+                        <i class="fa fa-fw fa-linkedin"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NumPy-Indexing-and-Selection"><span class="nav-number">1.</span> <span class="nav-text">NumPy Indexing and Selection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bracket-Indexing-and-Selection"><span class="nav-number">1.1.</span> <span class="nav-text">Bracket Indexing and Selection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Broadcasting"><span class="nav-number">1.2.</span> <span class="nav-text">Broadcasting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Indexing-a-2D-array-matrices"><span class="nav-number">1.3.</span> <span class="nav-text">Indexing a 2D array (matrices)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fancy-Indexing"><span class="nav-number">1.4.</span> <span class="nav-text">Fancy Indexing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Selection"><span class="nav-number">1.5.</span> <span class="nav-text">Selection</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Farrah Tsai</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

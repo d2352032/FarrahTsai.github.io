@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Machine Learning,Tensor Flow,MINST,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="TensorFlowThis note shows how to use TensorFlow with MNIST Data Set .     We will briefly go through the installation and common elements of TensorFlow. Then we will start to input the MNIST data, and">
+<meta name="keywords" content="Machine Learning,Tensor Flow,MINST">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow and MNIST Data Set">
+<meta property="og:url" content="https://d2352032.github.io/2019/08/30/Tensorflow-and-MNIST-Dataset/index.html">
+<meta property="og:site_name" content="Farrah&#39;s Notebook">
+<meta property="og:description" content="TensorFlowThis note shows how to use TensorFlow with MNIST Data Set .     We will briefly go through the installation and common elements of TensorFlow. Then we will start to input the MNIST data, and">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://d2352032.github.io/2019/08/30/Tensorflow-and-MNIST-Dataset/output_28_0.png">
+<meta property="og:image" content="https://d2352032.github.io/2019/08/30/Tensorflow-and-MNIST-Dataset/output_27_1.png">
+<meta property="og:image" content="https://d2352032.github.io/2019/08/30/Tensorflow-and-MNIST-Dataset/output_28_0.png">
+<meta property="og:image" content="https://d2352032.github.io/2019/08/30/Tensorflow-and-MNIST-Dataset/output_32_1.png">
+<meta property="og:image" content="https://d2352032.github.io/2019/08/30/Tensorflow-and-MNIST-Dataset/output_33_1.png">
+<meta property="og:updated_time" content="2019-09-01T17:30:02.021Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorFlow and MNIST Data Set">
+<meta name="twitter:description" content="TensorFlowThis note shows how to use TensorFlow with MNIST Data Set .     We will briefly go through the installation and common elements of TensorFlow. Then we will start to input the MNIST data, and">
+<meta name="twitter:image" content="https://d2352032.github.io/2019/08/30/Tensorflow-and-MNIST-Dataset/output_28_0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://d2352032.github.io/2019/08/30/Tensorflow-and-MNIST-Dataset/">
+
+
+
+
+
+  <title>TensorFlow and MNIST Data Set | Farrah's Notebook</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Farrah's Notebook</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://d2352032.github.io/2019/08/30/Tensorflow-and-MNIST-Dataset/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Farrah Tsai">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Farrah's Notebook">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">TensorFlow and MNIST Data Set</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-30T01:48:53+08:00">
+                2019-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="TensorFlow"><a href="#TensorFlow" class="headerlink" title="TensorFlow"></a>TensorFlow</h2><p>This note shows how to use TensorFlow with <a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">MNIST Data Set</a> .<br>    <img src="/2019/08/30/Tensorflow-and-MNIST-Dataset/output_28_0.png"></p>
+<p>We will briefly go through the installation and common elements of TensorFlow. Then we will start to input the MNIST data, and use Matplotlib to display some of our MNIST images. After that we start to construct our TensorFlow model with cross entropy error measure and gradient descent optimization. Finally we will compare our output y to test dataset to estimate our model performance.</p>
+<a id="more"></a>
+
+<h3 id="Installation-of-TensorFlow-for-Winodws-10"><a href="#Installation-of-TensorFlow-for-Winodws-10" class="headerlink" title="Installation of TensorFlow for Winodws 10"></a>Installation of TensorFlow for Winodws 10</h3><p>As TensorFlow is not compatible with Windows 10, we need to install TensorFlow into a virtual environment. The following steps indicates how to do this with Anaconda.</p>
+<ol>
+<li><p>Install <a href="https://www.anaconda.com/distribution/" target="_blank" rel="noopener">Anaconda</a></p>
+</li>
+<li><p>Open ‘Anaconda Prompt’</p>
+</li>
+<li><p>Create a vitrual environment named ‘virtualEnv’ with anaconda:</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda create --name virtualEnv python=3.6 anaconda</span><br></pre></td></tr></table></figure>
+
+<p> After the packages are installed, we can use these commands to activate / deactivate the virtual environment:</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda activate virtualEnv</span><br><span class="line">conda deactivate</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Install Tensorflow in virtualEnv:</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install tensorflow</span><br></pre></td></tr></table></figure>
+
+<p> Then we finised TensorFlow installation.</p>
+</li>
+<li><p>Test:<br> After TensorFlow installed, we can active the ‘virtualEnv’, and type the code below in to Jupyter Notebook:</p>
+ <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br></pre></td></tr></table></figure>
+
+<p> If no error / warning occurs, then it means we already installed TensorFlow correctly.</p>
+</li>
+</ol>
+<p>Reference: <a href="https://makerpro.cc/2019/01/introduction-of-ai-experiments-and-the-installation-of-tensorflow-in-windows-system/" target="_blank" rel="noopener">installation-of-tensorflow-in-windows-system</a></p>
+<h3 id="Import-TensorFlow"><a href="#Import-TensorFlow" class="headerlink" title="Import TensorFlow"></a>Import TensorFlow</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br></pre></td></tr></table></figure>
+
+<h3 id="TensorFlow-Elements"><a href="#TensorFlow-Elements" class="headerlink" title="TensorFlow Elements"></a>TensorFlow Elements</h3><ol>
+<li>Simple Constants</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = tf.constant(<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>Running Sessions</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sess = tf.Session()</span><br><span class="line">sess.run(x)</span><br></pre></td></tr></table></figure>
+
+<pre><code>100</code></pre><p>To line up multiple Tensorflow operations in a session:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    print(x ** <span class="number">2</span>)</span><br><span class="line">    print(x + <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Tensor(&quot;pow_1:0&quot;, shape=(), dtype=int32)
+Tensor(&quot;add_4:0&quot;, shape=(), dtype=int32)</code></pre><ol start="3">
+<li>Place Holder</li>
+</ol>
+<p>When we don’t know the constants right now (for example, batch input need to update x and y for each iteration), we can declare place holder and use ‘<strong>feed_dict={x:<code>x_batch</code>, y:<code>y_batch</code>}</strong>‘later to fed in the data.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = tf.placeholder(tf.int32)</span><br><span class="line">y = tf.placeholder(tf.int32)</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>Defining Operations</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">add = tf.add(x,y)</span><br><span class="line">sub = tf.subtract(x,y)</span><br><span class="line">mul = tf.multiply(x,y)</span><br></pre></td></tr></table></figure>
+
+<p>Example of use placeholder with operation objects:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">d = &#123;x:<span class="number">20</span>,y:<span class="number">30</span>&#125;</span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    print(<span class="string">'Operations with Constants'</span>)</span><br><span class="line">    print(<span class="string">'Addition'</span>,sess.run(add,feed_dict=d))</span><br><span class="line">    print(<span class="string">'Subtraction'</span>,sess.run(sub,feed_dict=d))</span><br><span class="line">    print(<span class="string">'Multiplication'</span>,sess.run(mul,feed_dict=d))</span><br></pre></td></tr></table></figure>
+
+<pre><code>Operations with Constants
+Addition 50
+Subtraction -10
+Multiplication 600</code></pre><h2 id="Get-the-MNIST-Data"><a href="#Get-the-MNIST-Data" class="headerlink" title="Get the MNIST Data"></a>Get the MNIST Data</h2><h3 id="MNIST-data"><a href="#MNIST-data" class="headerlink" title="MNIST data"></a>MNIST data</h3><pre><code>[!Office Website](http://yann.lecun.com/exdb/mnist/)
+[!Chinese Data Source](https://scidm.nchc.org.tw/dataset/mnist)</code></pre><p>data sets: (datasize by ‘mnist.train.num_examples’)</p>
+<pre><code>mnist.train 55000    
+mnist.test 10000    
+mnist.validation 5000</code></pre><p>image and label:</p>
+<pre><code>X = mnist.train.images    
+y = mnist.train.label</code></pre><p>type(mnist):</p>
+<pre><code>tensorflow.contrib.learn.python.learn.datasets.base.Datasets</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mnist = input_data.read_data_sets(<span class="string">"MNIST_data/"</span>,one_hot=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Extracting MNIST_data/train-images-idx3-ubyte.gz
+Extracting MNIST_data/train-labels-idx1-ubyte.gz
+Extracting MNIST_data/t10k-images-idx3-ubyte.gz
+Extracting MNIST_data/t10k-labels-idx1-ubyte.gz</code></pre><h3 id="Visualizing-the-Data"><a href="#Visualizing-the-Data" class="headerlink" title="Visualizing the Data"></a>Visualizing the Data</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">%matplotlib inline</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mnist.train.images[<span class="number">0</span>].shape</span><br></pre></td></tr></table></figure>
+
+<pre><code>(784,)</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">10</span>, <span class="number">5</span>))</span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">plt.imshow(mnist.train.images[<span class="number">5</span>].reshape(<span class="number">28</span>,<span class="number">28</span>))</span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">plt.imshow(mnist.train.images[<span class="number">2</span>].reshape(<span class="number">28</span>,<span class="number">28</span>))</span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;matplotlib.image.AxesImage at 0x236962d7c50&gt;</code></pre><p><img src="output_27_1.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">15</span>, <span class="number">7</span>))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">    plt.subplot(<span class="number">2</span>,<span class="number">4</span>,i+<span class="number">1</span>)</span><br><span class="line">    plt.imshow(mnist.train.images[<span class="number">2</span>*i+<span class="number">1</span>].reshape(<span class="number">28</span>,<span class="number">28</span>))</span><br></pre></td></tr></table></figure>
+
+<p><img src="output_28_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mnist.train.labels[<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+<pre><code>array([0., 0., 0., 0., 0., 0., 0., 0., 1., 0.])</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mnist.train.labels[<span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+
+<pre><code>array([0., 0., 0., 0., 0., 0., 0., 0., 1., 0.])</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mnist.train.images[<span class="number">8</span>].max()</span><br></pre></td></tr></table></figure>
+
+<pre><code>1.0</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">10</span>, <span class="number">5</span>))</span><br><span class="line">plt.imshow(mnist.train.images[<span class="number">5</span>].reshape(<span class="number">28</span>,<span class="number">28</span>),cmap=<span class="string">'gist_gray'</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;matplotlib.image.AxesImage at 0x23699dd6f28&gt;</code></pre><p><img src="output_32_1.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">12</span>, <span class="number">5</span>))</span><br><span class="line">plt.imshow(mnist.train.images[<span class="number">5</span>].reshape(<span class="number">784</span>,<span class="number">1</span>),aspect=<span class="number">0.01</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;matplotlib.image.AxesImage at 0x23699317cc0&gt;</code></pre><p><img src="output_33_1.png" alt="png"></p>
+<h2 id="Create-the-Model"><a href="#Create-the-Model" class="headerlink" title="Create the Model"></a>Create the Model</h2><p><strong>Variable Objects</strong></p>
+<pre><code>tf.placeholder
+
+tf.Variable</code></pre><p><strong>Math Operation Objects</strong></p>
+<pre><code>tf.matmul
+
+tf.reduce_mean(array, axis)
+    return the mean value in each vector
+tf.reduce_mean(array, axis)
+    return the max value in each vector
+
+tf.argmax(input, axis(=0:row; =1:column)) 
+    if input=array, return the index of max value in each vector
+    if input=vector, return the index of max value in the vector
+
+tf.equal(input, pred)
+    return True of False for each element comparsion. The dim. of return is same as input array&apos;s dim.
+
+tf.nn.softmax_cross_entropy_with_logits_v2
+tf.train.GradientDescentOptimizer
+tf.train.GradientDescentOptimizer.minimize
+tf.global_variables_initializer</code></pre><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = tf.placeholder(tf.float32,shape=[<span class="literal">None</span>,<span class="number">784</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 10 because 0-9 possible numbers</span></span><br><span class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>,<span class="number">10</span>]))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Output = Possibility </span></span><br><span class="line">y = tf.matmul(x,W) + b</span><br></pre></td></tr></table></figure>
+
+<p>Loss and Optimizer</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y_true = tf.placeholder(tf.float32,[<span class="literal">None</span>,<span class="number">10</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Cross Entropy</span></span><br><span class="line">cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(labels=y_true, logits=y))</span><br><span class="line"><span class="comment"># Use Gradient Descent Optimizer</span></span><br><span class="line">optimizer = tf.train.GradientDescentOptimizer(learning_rate=<span class="number">0.5</span>)</span><br><span class="line"><span class="comment"># Train</span></span><br><span class="line">train = optimizer.minimize(cross_entropy)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Create-Session"><a href="#Create-Session" class="headerlink" title="Create Session"></a>Create Session</h3><p>Everything except of variables (<strong>constants</strong> and <strong>placeholders</strong>) do not require initialization .<br>But <strong>Variable (even if it is a constant)</strong> should be initialized. </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">init = tf.global_variables_initializer()</span><br></pre></td></tr></table></figure>
+
+<p>A Session object encapsulates the environment in which <strong>Operation objects are executed, and Tensor objects are evaluated</strong>.</p>
+<h3 id="Fitting-and-Evaluation"><a href="#Fitting-and-Evaluation" class="headerlink" title="Fitting and Evaluation"></a>Fitting and Evaluation</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    sess.run(init)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Train the model for 1000 steps on the training set</span></span><br><span class="line">    <span class="comment"># Using built in batch feeder from mnist for convenience</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> step <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">        </span><br><span class="line">        batch_x , batch_y = mnist.train.next_batch(<span class="number">100</span>)</span><br><span class="line">        </span><br><span class="line">        sess.run(train,feed_dict=&#123;x:batch_x,y_true:batch_y&#125;)</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># Test the Train Model</span></span><br><span class="line">    matches = tf.equal(tf.argmax(y,<span class="number">1</span>),tf.argmax(y_true,<span class="number">1</span>)) </span><br><span class="line">   </span><br><span class="line">    acc = tf.reduce_mean(tf.cast(matches,tf.float32)) </span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    print(sess.run(tf.reduce_max(y,<span class="number">1</span>), feed_dict=&#123;x:mnist.test.images&#125;))</span><br><span class="line">    print(sess.run(tf.argmax(y,<span class="number">1</span>), feed_dict=&#123;x:mnist.test.images&#125;))</span><br><span class="line">    print(sess.run(acc,feed_dict=&#123;x:mnist.test.images,y_true:mnist.test.labels&#125;))</span><br></pre></td></tr></table></figure>
+
+<pre><code>[10.566967  10.0331335  6.0711703 ...  8.382192   7.064541  12.832104 ]
+[7 2 1 ... 4 5 6]
+0.9139</code></pre><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/python-for-data-science-and-machine-learning-bootcamp/" target="_blank" rel="noopener">https://www.udemy.com/python-for-data-science-and-machine-learning-bootcamp/</a></p>
+<p><a href="https://www.tensorflow.org/api_docs/python/tf/math/argmax)" target="_blank" rel="noopener">https://www.tensorflow.org/api_docs/python/tf/math/argmax)</a></p>
+<p><a href="https://stackoverflow.com/questions/34987509/tensorflow-max-of-a-tensor-along-an-axis" target="_blank" rel="noopener">https://stackoverflow.com/questions/34987509/tensorflow-max-of-a-tensor-along-an-axis</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          
+            <a href="/tags/Tensor-Flow/" rel="tag"># Tensor Flow</a>
+          
+            <a href="/tags/MINST/" rel="tag"># MINST</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/27/Hexo-MathJax/" rel="next" title="Hexo-MathJax">
+                <i class="fa fa-chevron-left"></i> Hexo-MathJax
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/30/TensorFlow-and-Deep-Neural-Network/" rel="prev" title="TensorFlow and Deep Neural Network (DNN)">
+                TensorFlow and Deep Neural Network (DNN) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Farrah Tsai</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/d2352032" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:d2352032@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/hsin-fang-tsai-0b5a54ba/" target="_blank" title="Linkedin">
+                      
+                        <i class="fa fa-fw fa-linkedin"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TensorFlow"><span class="nav-number">1.</span> <span class="nav-text">TensorFlow</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Installation-of-TensorFlow-for-Winodws-10"><span class="nav-number">1.1.</span> <span class="nav-text">Installation of TensorFlow for Winodws 10</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Import-TensorFlow"><span class="nav-number">1.2.</span> <span class="nav-text">Import TensorFlow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TensorFlow-Elements"><span class="nav-number">1.3.</span> <span class="nav-text">TensorFlow Elements</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Get-the-MNIST-Data"><span class="nav-number">2.</span> <span class="nav-text">Get the MNIST Data</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MNIST-data"><span class="nav-number">2.1.</span> <span class="nav-text">MNIST data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Visualizing-the-Data"><span class="nav-number">2.2.</span> <span class="nav-text">Visualizing the Data</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-the-Model"><span class="nav-number">3.</span> <span class="nav-text">Create the Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-Session"><span class="nav-number">3.1.</span> <span class="nav-text">Create Session</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fitting-and-Evaluation"><span class="nav-number">3.2.</span> <span class="nav-text">Fitting and Evaluation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Farrah Tsai</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
